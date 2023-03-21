@@ -1,7 +1,8 @@
 const app = require('./app');
 
-const PORT = process.env.PORT || 3001;
+// não altere esse arquivo, essa estrutura é necessária para à avaliação do projeto
 
-app.listen(PORT, () => {
-  console.log('Everything is gudi');
+app.listen(process.env.PORT, () => {
+  console.log(`Escutando na porta ${process.env.PORT}`);
 });
+
