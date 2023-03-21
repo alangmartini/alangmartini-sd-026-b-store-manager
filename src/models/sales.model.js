@@ -54,7 +54,6 @@ const create = async (data) => {
   const { productId } = data[0];
 
   const isExistent = await findById(productId);
-  console.log('isExistent is:', isExistent);
   
   if (!isExistent) {
     return {
@@ -92,7 +91,7 @@ const constructPlaceHolders = (data) => {
 const createMultiple = async (data) => {
   const placeHolders = constructPlaceHolders(data);
   
-  const [isExistent] = await findByIds(placeHolders, data);
+  const isExistent = await findByIds(placeHolders, data);
 
   if (!isExistent) {
     return { type: ERRORS_TYPE.INVALID_ID,
@@ -151,6 +150,7 @@ const remove = async (id) => {
 module.exports = {
   // findAll,
   findById,
+  findByIds,
   // findByQuery,
   insertIntoSales,
   create,
