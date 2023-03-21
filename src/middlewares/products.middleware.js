@@ -7,10 +7,11 @@ const decideStatusCode = (errorMessage) => {
   if (errorMessage.includes('characters long')) {
     return 422;
   }
+  return 400;
 }
 
 
-const validateName = (req, res, next) => {
+const validateName = async (req, res, next) => {
   const { name } = req.body
   const error = productsSchema.nameSchema.validate(name);
   
