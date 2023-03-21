@@ -8,6 +8,6 @@ productsRouter.get('/:id', productsController.findById);
 productsRouter.get('/search', productsController.findByQuery);
 productsRouter.post('/', productsController.create);
 productsRouter.put('/:id', productsController.update);
-productsRouter.delete('/:id', productsController.delete);
+productsRouter.delete('/:id', productsController.remove);
 
 module.exports = productsRouter;
