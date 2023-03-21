@@ -1,4 +1,5 @@
 const { connection } = require('./connection');
+const snakeize = require('snakeize');
 
 const tableName = 'products';
 
@@ -37,10 +38,13 @@ const create = async (data) => {
     .map(() => '?')
     .join(', ')
 
-  const [result] = await connection.execute(`
+  const [{ insertId: result }] = await connection.execute(
+    `
     INSERT INTO ${tableName} (${columns})
     VALUES (${placeholders});
-  `, [...Object.values(data)]);
+  `,
+    [...Object.values(data)]
+  );
 
   return result;
 };

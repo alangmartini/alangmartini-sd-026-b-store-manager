@@ -34,14 +34,16 @@ const findByQuery = async (req, res) => {
  return res.status(200).json(result);
 };
 const create = async (req, res) => {
- const result = await productsService.create(data);
+  const data = req.body
 
- if (result.type) {
-  const error = result;
-  return res.status(404).json(error);
+ const insertId = await productsService.create(data);
+
+ if (insertId.type) {
+   const error = insertId;
+   return res.status(404).json(error);
  }
 
- return res.status(200).json(result);
+ return res.status(201).json({ id: insertId, name: data.name });
 };
 const update = async (req, res) => {
  const result = await productsService.update(id);
