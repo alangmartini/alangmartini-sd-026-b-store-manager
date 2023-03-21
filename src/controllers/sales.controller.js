@@ -1,5 +1,6 @@
 const { salesModel } = require('../models');
 const { salesService } = require('../services');
+
 const sales = [
   {
     productId: 1,
@@ -17,7 +18,7 @@ const singleSale = [
   },
 ];
 
-const findAll = async (req, res) => {
+const findAll = async (_req, res) => {
  const result = salesService.findAll();
 
  if (result.type) {
@@ -28,6 +29,7 @@ const findAll = async (req, res) => {
  return res.status(200).json(result);
 };
 const findById = async (req, res) => {
+  const { id } = req.params;
  const result = salesService.findById(id);
 
  if (result.type) {
@@ -38,7 +40,8 @@ const findById = async (req, res) => {
  return res.status(200).json(result);
 };
 const findByQuery = async (req, res) => {
- const result = salesService.findByQuery(query);
+  const { q } = req.query;
+ const result = salesService.findByQuery(q);
 
  if (result.type) {
   const error = result;
@@ -47,8 +50,9 @@ const findByQuery = async (req, res) => {
 
  return res.status(200).json(result);
 };
-const create = async (req, res) => {
-  await salesModel.create(singleSale);
+const create = async (_req, res) => {
+  // await salesModel.create(singleSale);
+  await salesModel.createMultiple(sales);
 
 //  const result = salesService.create(id);
 
@@ -60,6 +64,7 @@ const create = async (req, res) => {
 //  return res.status(200).json(result);
 };
 const update = async (req, res) => {
+  const { id } = req.params;
  const result = salesService.update(id);
 
  if (result.type) {
@@ -70,6 +75,8 @@ const update = async (req, res) => {
  return res.status(200).json(result);
 };
 const remove = async (req, res) => {
+  const { id } = req.params;
+
  const result = salesService.delete(id);
 
  if (result.type) {

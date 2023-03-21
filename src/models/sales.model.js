@@ -1,17 +1,16 @@
 const { ERRORS_TYPE, ERRORS_MESSAGE } = require('../errors');
 const { connection } = require('./connection');
-const snakeize = require('snakeize');
 
 const tableName = 'sales';
-const junctionTableName = 'sales_products'
+const junctionTableName = 'sales_products';
 
-const findAll = async () => {
-  const [result] = await connection.execute(`
-  SELECT * FROM ${tableName};
-  `)
+// const findAll = async () => {
+//   const [result] = await connection.execute(`
+//   SELECT * FROM ${tableName};
+//   `);
 
-  return result;
-};
+//   return result;
+// };
 
 const findById = async (id) => {
   const [result] = await connection.execute(`
@@ -21,37 +20,53 @@ const findById = async (id) => {
   return result;
 };
 
-const findByQuery = async (query) => {
-  const [result] = await connection.execute(`
-    SELECT * FROM ${tableName} WHERE ${nameColumn} LIKE '%?%';
-  `, [query]);
+const findByIds = async (placeHolders, data) => {
+  const idsProducts = data.map((sale) => sale.productId);
 
-  return result;
+  const [isExistent] = await connection.execute(
+    `
+      SELECT * FROM products WHERE ${placeHolders};
+    `,
+    idsProducts,
+  );
+  
+  return isExistent;
+};
+
+// const findByQuery = async (query) => {
+//   const [result] = await connection.execute(`
+//     SELECT * FROM ${tableName} WHERE  LIKE '%?%';
+//   `, [query]);
+
+//   return result;
+// };
+
+const insertIntoSales = async () => {
+  const [{ insertId }] = await connection.execute(`
+  INSERT INTO sales (date)
+  VALUES (CURRENT_TIMESTAMP);
+  `, []);
+
+  return insertId;
 };
 
 const create = async (data) => {  
   const { productId } = data[0];
 
-  const [isExistent] = await connection.execute(`
-  SELECT * FROM products WHERE id = ?
-  `, [productId]);
+  const isExistent = await findById(productId);
   
   if (!isExistent) {
     return {
       type: ERRORS_TYPE.INVALID_ID,
       message: ERRORS_MESSAGE.INVALID_ID,
-    }
+    };
   }
 
-  const [{ insertId }] = await connection.execute(`
-  INSERT INTO sales (date)
-  VALUES (CURRENT_TIMESTAMP);
-  `, []);
+  const insertId = await insertIntoSales();
   
-  const values = [insertId, data[0].quantity, data[0].productId]
-  console.log('values is:', values);
+  const values = [insertId, data[0].quantity, data[0].productId];
 
-  const [result] = await connection.execute(`
+  await connection.execute(`
     INSERT INTO sales_products (sale_id, quantity, product_id)
     VALUES (?, ?, ?);
   `, values);
@@ -59,69 +74,54 @@ const create = async (data) => {
   return insertId;
 };
 
-const createMultiple = async (data) => {
+const constructPlaceHolders = (data) => {
   const placeHolders = data
-  .map((_sales, index) => {
-    const lastIndex = data.length - 1;
-    if (index !== lastIndex) {
-      return `id = ? OR`;
-    } else {
-      return `id = ?`;
-    }
-  })
-  .join(" ");
+    .map((_sales, index) => {
+      const lastIndex = data.length - 1;
+      if (index !== lastIndex) {
+        return 'id = ? OR';
+      }
+      return 'id = ?';
+    })
+    .join(' ');
   
-  const idsProducts = data.map((sale) => sale.productId);
+  return placeHolders;
+};
 
-  const [isExistent] = await connection.execute(
-    `
-      SELECT * FROM products WHERE ${placeHolders};
-    `,
-    idsProducts
-  );
-
+const createMultiple = async (data) => {
+  const placeHolders = constructPlaceHolders(data);
+  
+  const [isExistent] = await findByIds(placeHolders, data);
 
   if (!isExistent) {
-    return {
-      type: ERRORS_TYPE.INVALID_ID,
+    return { type: ERRORS_TYPE.INVALID_ID,
       message: ERRORS_MESSAGE.INVALID_ID,
-    }
+    };
   }
 
-  const [{ insertId }] = await connection.execute(
-    `
-      INSERT INTO sales (date)
-      VALUES (CURRENT_TIMESTAMP)
-    `
-  );
+  const insertId = await insertIntoSales();
 
-  const columns = ['product_id', 'sale_id', 'quantity']
+  const columns = ['product_id', 'sale_id', 'quantity'];
 
-  const placeholders = data.map(() => "(?, ?, ?)").join(", ");
+  const placeholders = data.map(() => '(?, ?, ?)').join(', ');
 
   const saleId = insertId;
 
-  const allValues = [];
-  const values = data.forEach((sale) => {
-    allValues.push(sale.productId);
-    allValues.push(saleId);
-    allValues.push(sale.quantity);
-  });
-  
-  await connection.execute(
-    `
-    INSERT INTO ${junctionTableName} (${columns})
-    VALUES ${placeholders};
-    `, allValues
-  );
-  
+  const allValues = data.reduce((acc, sale) => {
+    acc.push(...[sale.productId, saleId, sale.quantity]);
+    return acc;
+  }, []);
+
+  await connection.execute(` INSERT INTO ${junctionTableName} (${columns})
+    VALUES ${placeholders};`, allValues);
+
   return insertId;
-}
+};
 
 const update = async (id, data) => {
   const placeHolders = Object
     .entries(data)
-    .map(() => `? = ?`)
+    .map(() => '? = ?')
     .join(', ');
 
   const columsValuePair = [];
@@ -142,16 +142,15 @@ const update = async (id, data) => {
 const remove = async (id) => {
   const [result] = await connection.execute(`
     DELETE FROM ${tableName} WHERE id = ?;
-  `, [id])
+  `, [id]);
 
   return result;
 };
 
-
 module.exports = {
-  findAll,
+  // findAll,
   findById,
-  findByQuery,
+  // findByQuery,
   create,
   createMultiple,
   update,

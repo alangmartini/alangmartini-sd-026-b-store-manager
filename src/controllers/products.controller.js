@@ -24,7 +24,8 @@ const findById = async (req, res) => {
  return res.status(200).json(result);
 };
 const findByQuery = async (req, res) => {
- const result = await productsService.findByQuery(query);
+  const { q } = req.query;
+ const result = await productsService.findByQuery(q);
 
  if (result.type) {
   const error = result;
@@ -34,7 +35,7 @@ const findByQuery = async (req, res) => {
  return res.status(200).json(result);
 };
 const create = async (req, res) => {
-  const data = req.body
+  const data = req.body;
 
   const insertId = await productsService.create(data);
 
@@ -47,6 +48,7 @@ const create = async (req, res) => {
 };
 
 const update = async (req, res) => {
+  const { id } = req.params;
  const result = await productsService.update(id);
 
  if (result.type) {
@@ -57,6 +59,7 @@ const update = async (req, res) => {
  return res.status(200).json(result);
 };
 const remove = async (req, res) => {
+  const { id } = req.params;
  const result = await productsService.delete(id);
 
  if (result.type) {
@@ -73,5 +76,5 @@ module.exports = {
   findByQuery,
   create,
   update,
-  remove
+  remove,
 };

@@ -1,0 +1,16 @@
+[
+  {
+    "_id": "2148cf13-17a5-4970-b41f-d5abcd169619",
+    "colId": "history",
+    "containerId": "",
+    "name": "http://localhost:3001/sales",
+    "url": "http://localhost:3001/sales",
+    "method": "POST",
+    "sortNum": 0,
+    "created": "2023-03-21T23:29:17.418Z",
+    "modified": "2023-03-21T23:29:17.418Z",
+    "headers": [],
+    "params": [],
+    "tests": []
+  }
+]
