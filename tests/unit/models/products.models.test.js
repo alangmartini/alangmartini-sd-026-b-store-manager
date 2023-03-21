@@ -6,7 +6,7 @@ const sinonChai = require('sinon-chai');
 
 // Mocks and stubs
 const { connection } = require('../../../src/models/connection');
-const { findAllReturn } = require('./mocks/products.model.mocks');
+const mock = require('./mocks/products.model.mocks');
 
 // To test
 const { productsModel } = require('../../../src/models');
@@ -22,11 +22,20 @@ describe('Tests for products model', function() {
   
   describe('findAll function', function () {
     it('Should return all products', async function () {
-      sinon.stub(connection, 'execute').resolves([findAllReturn]);
+      sinon.stub(connection, 'execute').resolves([mock.findAllReturn]);
 
       const result = await productsModel.findAll();
 
-      expect(result).to.equal(findAllReturn);
+      expect(result).to.equal(mock.findAllReturn);
+    });
+  });
+  describe('create function', function () {
+    it('Should return inserted product id', async function () {
+      sinon.stub(connection, 'execute').resolves([mock.insertIdObj]);
+
+      const result = await productsModel.create(mock.product);
+
+      expect(result).to.equal(mock.insertIdObj.insertId);
     });
   });
 })

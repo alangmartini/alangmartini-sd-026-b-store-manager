@@ -9,6 +9,17 @@ const findAllReturn = [
   }
 ];
 
+const product = {
+  id: '1',
+  name: 'Herois de brinquedo',
+}
+
+const insertIdObj = {
+  insertId: 1,
+}
+
 module.exports = {
   findAllReturn,
+  insertIdObj,
+  product,
 };
