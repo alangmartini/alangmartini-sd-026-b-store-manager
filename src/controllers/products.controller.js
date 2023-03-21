@@ -35,7 +35,6 @@ const findByQuery = async (req, res) => {
 };
 const create = async (req, res) => {
   const data = req.body
-
  const insertId = await productsService.create(data);
 
  if (insertId.type) {
