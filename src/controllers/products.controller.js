@@ -31,7 +31,7 @@ const findByQuery = async (req, res) => {
  return res.status(200).json(result);
 };
 const create = async (req, res) => {
- const result = productsService.create(id);
+ const result = productsService.create(data);
 
  if (result.type) {
   const error = result;
