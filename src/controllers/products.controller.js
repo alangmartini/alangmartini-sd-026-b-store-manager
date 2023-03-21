@@ -2,7 +2,7 @@ const { productsService } = require('../services');
 
 const findAll = async (req, res) => {
  const result = await productsService.findAll();
-
+  
  if (result.type) {
   const error = result;
   return res.status(404).json({ message: error.message });
@@ -18,7 +18,7 @@ const findById = async (req, res) => {
 
  if (result.type) {
   const error = result;
-  return res.status(404).json(error);
+  return res.status(404).json({ message: error.message });
  }
 
  return res.status(200).json(result);

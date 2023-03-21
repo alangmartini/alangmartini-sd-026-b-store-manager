@@ -3,9 +3,8 @@ const { productsModel } = require('../models');
 
 const findAll = async () => {
   const result = await productsModel.findAll();
-  console.log('result is:', result);
 
-  if (!result) {
+  if (!result || result.length === 0) {
     return {
       type: ERRORS_TYPE.PRODUCT_NOT_FOUND,
       message: ERRORS_MESSAGE.PRODUCT_NOT_FOUND,
@@ -18,11 +17,10 @@ const findAll = async () => {
 const findById = async (id) => {
   const result = await productsModel.findById(id);
 
-  if (!result) {
+  if (!result || result.length === 0) {
     return {
       type: ERRORS_TYPE.PRODUCT_NOT_FOUND,
       message: ERRORS_MESSAGE.PRODUCT_NOT_FOUND,
-      error: new Error(ERRORS_MESSAGE.PRODUCT_NOT_FOUND),
     }
   }
 

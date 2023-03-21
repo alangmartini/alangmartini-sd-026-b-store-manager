@@ -10,6 +10,7 @@
   "scripts": {
     "test": "env $(cat .env) jest --config ./jest.config.js --runInBand",
     "test:mocha": "nyc --all --include src/models --include src/services --include src/controllers mocha tests/unit/**/*.js --exit",
+    "mocha": "mocha tests/**/*$NAME*.test.js --exit",
     "start": "env $(cat .env) node src/server.js",
     "dev": "env $(cat .env) nodemon --ignore coverage --inspect=0.0.0.0:9229 src/server.js",
     "lint": "eslint --no-inline-config --no-error-on-unmatched-pattern -c .eslintrc.json . --ext .js, .jsx",

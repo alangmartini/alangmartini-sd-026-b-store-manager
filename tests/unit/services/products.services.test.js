@@ -39,8 +39,6 @@ describe('Tests for products services', function() {
       sinon.stub(productsModel, 'findAll').resolves();
 
       const result = await productsService.findAll();
-      console.log(result);
-      console.log(ERROR_OBJECT);
       expect(result).to.deep.equal(ERROR_OBJECT);
     })
   });
