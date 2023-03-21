@@ -1,9 +1,10 @@
 const { connection } = require('./connection');
+const snakeize = require('snakeize')
 
 const tableName = '';
 
 const findAll = async () => {
-  const [result] = connection.execute(`
+  const [result] = await connection.execute(`
   SELECT * FROM ${tableName};
   `)
 
@@ -11,73 +12,65 @@ const findAll = async () => {
 };
 
 const findById = async (id) => {
-  const result = connection.execute(`
+  const [result] = await connection.execute(`
     SELECT * FROM ${tableName} WHERE id = ?;
   `, [id]);
 
-  if (!result) {
-    return {
-      type: ERRORS_TYPE.NOT_FOUND,
-      message: ERRORS_MESSAGE.NOT_FOUND,
-      error: new Error('Nenhum resultado retornado'),
-    }
-  }
+  return result;
+};
+
+const findByQuery = async (query) => {
+  const [result] = await connection.execute(`
+    SELECT * FROM ${tableName} WHERE ${nameColumn} LIKE '%?%';
+  `, [query]);
 
   return result;
 };
 
-const findBy = async () => {
-  const result = productsModel.findBy(id);
+const create = async (data) => {
+  const columns = Object
+    .keys(snakeize(data))
+    .map((key) => `${key}`)
+    .join(', ');
 
-  if (!result) {
-    return {
-      type: ERRORS_TYPE.NOT_FOUND,
-      message: ERRORS_MESSAGE.NOT_FOUND,
-      error: new Error('Nenhum resultado retornado'),
-    }
-  }
+  const placeholders = Object
+    .keys(data)
+    .map(() => '?')
+    .join(', ')
 
-  return result;
-};
-
-const create = async () => {
-  const result = productsModel.create(id);
-
-  if (!result) {
-    return {
-      type: ERRORS_TYPE.NOT_FOUND,
-      message: ERRORS_MESSAGE.NOT_FOUND,
-      error: new Error('Nenhum resultado retornado'),
-    }
-  }
+  const [result] = await connection.execute(`
+    INSERT INTO ${tableName} (${columns})
+    VALUES (${placeholders});
+  `, [...Object.values(data)]);
 
   return result;
 };
 
-const update = async () => {
-  const result = productsModel.update(id);
+const update = async (id, data) => {
+  const placeHolders = Object
+    .entries(data)
+    .map(() => `? = ?`)
+    .join(', ');
 
-  if (!result) {
-    return {
-      type: ERRORS_TYPE.NOT_FOUND,
-      message: ERRORS_MESSAGE.NOT_FOUND,
-      error: new Error('Nenhum resultado retornado'),
-    }
-  }
+  const columsValuePair = [];
+
+  Object
+    .entries(data)
+    .forEach((entry) => columsValuePair.push([entry[0], entry[1]]));
+
+  const [result] = await connection.execute(`
+    UPDATE ${tableName}
+    SET (${placeHolders})
+    WHERE id = ?;
+  `, [...columsValuePair, id]);
 
   return result;
 };
 
-const remove = async () => {
-  const result = productsModel.remove(id);
-
-  if (!result) {
-    return {
-      type: ERRORS_TYPE.NOT_FOUND,
-      message: ERRORS_MESSAGE.NOT_FOUND,
-      error: new Error('Nenhum resultado retornado'),
-    }
-  }
+const remove = async (id) => {
+  const [result] = await connection.execute(`
+    DELETE FROM ${tableName} WHERE id = ?;
+  `, [id])
 
   return result;
 };
@@ -86,7 +79,7 @@ const remove = async () => {
 module.exports = {
   findAll,
   findById,
-  findBy,
+  findByQuery,
   create,
   update,
   remove,
