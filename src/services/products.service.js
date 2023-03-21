@@ -1,13 +1,14 @@
+const { ERRORS_MESSAGE, ERRORS_TYPE } = require('../errors');
 const { productsModel } = require('../models');
 
 const findAll = async () => {
-  const result = productsModel.findAll();
+  const result = await productsModel.findAll();
+  console.log('result is:', result);
 
   if (!result) {
     return {
-      type: ERRORS_TYPE.NOT_FOUND,
-      message: ERRORS_MESSAGE.NOT_FOUND,
-      error: new Error('Nenhum resultado retornado'),
+      type: ERRORS_TYPE.PRODUCT_NOT_FOUND,
+      message: ERRORS_MESSAGE.PRODUCT_NOT_FOUND,
     }
   }
 
@@ -15,13 +16,13 @@ const findAll = async () => {
 };
 
 const findById = async (id) => {
-  const result = productsModel.findById(id);
+  const result = await productsModel.findById(id);
 
   if (!result) {
     return {
-      type: ERRORS_TYPE.NOT_FOUND,
-      message: ERRORS_MESSAGE.NOT_FOUND,
-      error: new Error('Nenhum resultado retornado'),
+      type: ERRORS_TYPE.PRODUCT_NOT_FOUND,
+      message: ERRORS_MESSAGE.PRODUCT_NOT_FOUND,
+      error: new Error(ERRORS_MESSAGE.PRODUCT_NOT_FOUND),
     }
   }
 
@@ -29,7 +30,7 @@ const findById = async (id) => {
 };
 
 const findByQuery = async (query) => {
-  const result = productsModel.findByQuery(query);
+  const result = await productsModel.findByQuery(query);
 
   if (!result) {
     return {
@@ -43,7 +44,7 @@ const findByQuery = async (query) => {
 };
 
 const create = async (data) => {
-  const result = productsModel.create(data);
+  const result = await productsModel.create(data);
 
   if (!result) {
     return {
@@ -57,7 +58,7 @@ const create = async (data) => {
 };
 
 const update = async (id) => {
-  const result = productsModel.update(id);
+  const result = await productsModel.update(id);
 
   if (!result) {
     return {
@@ -71,7 +72,7 @@ const update = async (id) => {
 };
 
 const remove = async (id) => {
-  const result = productsModel.remove(id);
+  const result = await productsModel.remove(id);
 
   if (!result) {
     return {

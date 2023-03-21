@@ -1,17 +1,18 @@
 const { productsService } = require('../services');
 
 const findAll = async (req, res) => {
- const result = productsService.findAll();
+ const result = await productsService.findAll();
 
  if (result.type) {
   const error = result;
-  return res.status(404).json(error);
+  return res.status(404).json({ message: error.message });
  }
 
  return res.status(200).json(result);
 };
+
 const findById = async (req, res) => {
- const result = productsService.findById(id);
+ const result = await productsService.findById(id);
 
  if (result.type) {
   const error = result;
@@ -21,7 +22,7 @@ const findById = async (req, res) => {
  return res.status(200).json(result);
 };
 const findByQuery = async (req, res) => {
- const result = productsService.findByQuery(query);
+ const result = await productsService.findByQuery(query);
 
  if (result.type) {
   const error = result;
@@ -31,7 +32,7 @@ const findByQuery = async (req, res) => {
  return res.status(200).json(result);
 };
 const create = async (req, res) => {
- const result = productsService.create(data);
+ const result = await productsService.create(data);
 
  if (result.type) {
   const error = result;
@@ -41,7 +42,7 @@ const create = async (req, res) => {
  return res.status(200).json(result);
 };
 const update = async (req, res) => {
- const result = productsService.update(id);
+ const result = await productsService.update(id);
 
  if (result.type) {
   const error = result;
@@ -51,7 +52,7 @@ const update = async (req, res) => {
  return res.status(200).json(result);
 };
 const remove = async (req, res) => {
- const result = productsService.delete(id);
+ const result = await productsService.delete(id);
 
  if (result.type) {
   const error = result;
