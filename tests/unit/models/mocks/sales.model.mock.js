@@ -15,7 +15,22 @@ const singleSale = [
   },
 ];
 
+const cadastratedSale = {
+  id: 1,
+  itemsSold: [
+    {
+      productId: 1,
+      quantity: 1,
+    },
+    {
+      productId: 2,
+      quantity: 5,
+    },
+  ],
+};
+
 module.exports = {
   sales,
   singleSale,
+  cadastratedSale,
 };

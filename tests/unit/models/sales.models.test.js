@@ -32,11 +32,14 @@ describe("Tests for sales model", function () {
   describe("create function", function () {
     it("Should return correctly when only 1 sale", async function () {
       sinon.stub(connection, "execute")
-        .onCall(0).returns([{ algo: 'algo' }]);
+        .onCall(0).returns([22])
+        .onCall(1).returns([{ insertId: 1 }])
+        .onCall(2).returns([]);
 
       const result = await salesModel.create(mock.sales);
+      console.log('result is:', result);
 
-      expect(result).to.equal(mock.insertIdObj.insertId);
+      expect(result).to.equal(1);
     });
   });
 });

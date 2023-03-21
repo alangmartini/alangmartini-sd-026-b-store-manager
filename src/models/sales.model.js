@@ -54,6 +54,7 @@ const create = async (data) => {
   const { productId } = data[0];
 
   const isExistent = await findById(productId);
+  console.log('isExistent is:', isExistent);
   
   if (!isExistent) {
     return {
@@ -151,6 +152,7 @@ module.exports = {
   // findAll,
   findById,
   // findByQuery,
+  insertIntoSales,
   create,
   createMultiple,
   update,
