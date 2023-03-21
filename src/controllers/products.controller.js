@@ -12,6 +12,8 @@ const findAll = async (req, res) => {
 };
 
 const findById = async (req, res) => {
+  const { id } = req.params;
+
  const result = await productsService.findById(id);
 
  if (result.type) {

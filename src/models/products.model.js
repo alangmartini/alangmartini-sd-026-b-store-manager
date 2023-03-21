@@ -1,17 +1,17 @@
 const { connection } = require('./connection');
 
-const tableName = '';
+const tableName = 'products';
 
 const findAll = async () => {
   const [result] = await connection.execute(`
-  SELECT * FROM ${tableName};
-  `)
+    SELECT * FROM StoreManager.products
+    `);
 
   return result;
 };
 
 const findById = async (id) => {
-  const [result] = await connection.execute(`
+  const [[result]] = await connection.execute(`
     SELECT * FROM ${tableName} WHERE id = ?;
   `, [id]);
 
