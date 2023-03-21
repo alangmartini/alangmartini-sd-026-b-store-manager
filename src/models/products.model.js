@@ -1,5 +1,5 @@
-const { connection } = require('./connection');
 const snakeize = require('snakeize');
+const { connection } = require('./connection');
 
 const tableName = 'products';
 
@@ -21,7 +21,7 @@ const findById = async (id) => {
 
 const findByQuery = async (query) => {
   const [result] = await connection.execute(`
-    SELECT * FROM ${tableName} WHERE ${nameColumn} LIKE '%?%';
+    SELECT * FROM ${tableName} WHERE name LIKE '%?%';
   `, [query]);
 
   return result;
@@ -36,14 +36,14 @@ const create = async (data) => {
   const placeholders = Object
     .keys(data)
     .map(() => '?')
-    .join(', ')
+    .join(', ');
 
   const [{ insertId: result }] = await connection.execute(
     `
     INSERT INTO ${tableName} (${columns})
     VALUES (${placeholders});
   `,
-    [...Object.values(data)]
+    [...Object.values(data)],
   );
 
   return result;
@@ -52,7 +52,7 @@ const create = async (data) => {
 const update = async (id, data) => {
   const placeHolders = Object
     .entries(data)
-    .map(() => `? = ?`)
+    .map(() => '? = ?')
     .join(', ');
 
   const columsValuePair = [];
@@ -73,11 +73,10 @@ const update = async (id, data) => {
 const remove = async (id) => {
   const [result] = await connection.execute(`
     DELETE FROM ${tableName} WHERE id = ?;
-  `, [id])
+  `, [id]);
 
   return result;
 };
-
 
 module.exports = {
   findAll,

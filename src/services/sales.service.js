@@ -1,3 +1,4 @@
+const { ERRORS_MESSAGE, ERRORS_TYPE } = require('../errors');
 const { salesModel } = require('../models');
 
 const findAll = async () => {
@@ -7,8 +8,7 @@ const findAll = async () => {
     return {
       type: ERRORS_TYPE.NOT_FOUND,
       message: ERRORS_MESSAGE.NOT_FOUND,
-      error: new Error('Nenhum resultado retornado'),
-    }
+    };
   }
 
   return result;
@@ -21,8 +21,7 @@ const findById = async (id) => {
     return {
       type: ERRORS_TYPE.NOT_FOUND,
       message: ERRORS_MESSAGE.NOT_FOUND,
-      error: new Error('Nenhum resultado retornado'),
-    }
+    };
   }
 
   return result;
@@ -35,8 +34,7 @@ const findByQuery = async (query) => {
     return {
       type: ERRORS_TYPE.NOT_FOUND,
       message: ERRORS_MESSAGE.NOT_FOUND,
-      error: new Error('Nenhum resultado retornado'),
-    }
+    };
   }
 
   return result;
@@ -49,8 +47,7 @@ const create = async (data) => {
     return {
       type: ERRORS_TYPE.NOT_FOUND,
       message: ERRORS_MESSAGE.NOT_FOUND,
-      error: new Error('Nenhum resultado retornado'),
-    }
+    };
   }
 
   return result;
@@ -63,8 +60,7 @@ const update = async (id) => {
     return {
       type: ERRORS_TYPE.NOT_FOUND,
       message: ERRORS_MESSAGE.NOT_FOUND,
-      error: new Error('Nenhum resultado retornado'),
-    }
+    };
   }
 
   return result;
@@ -77,13 +73,11 @@ const remove = async (id) => {
     return {
       type: ERRORS_TYPE.NOT_FOUND,
       message: ERRORS_MESSAGE.NOT_FOUND,
-      error: new Error('Nenhum resultado retornado'),
-    }
+    };
   }
 
   return result;
 };
-
 
 module.exports = {
   findAll,

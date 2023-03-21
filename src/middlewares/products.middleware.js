@@ -8,11 +8,10 @@ const decideStatusCode = (errorMessage) => {
     return 422;
   }
   return 400;
-}
-
+};
 
 const validateName = async (req, res, next) => {
-  const { name } = req.body
+  const { name } = req.body;
   const error = productsSchema.nameSchema.validate(name);
   
   if (error.error) {

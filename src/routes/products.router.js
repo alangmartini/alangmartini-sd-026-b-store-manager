@@ -2,7 +2,6 @@ const express = require('express');
 const { productsController } = require('../controllers');
 const { productMiddleware } = require('../middlewares');
 
-
 const productsRouter = express.Router();
 
 productsRouter.get('/', productsController.findAll);
@@ -14,7 +13,7 @@ productsRouter.get('/search', productsController.findByQuery);
 productsRouter.post(
   '/',
   productMiddleware.validateName,
-  productsController.create
+  productsController.create,
 );
 
 productsRouter.put('/:id', productsController.update);
