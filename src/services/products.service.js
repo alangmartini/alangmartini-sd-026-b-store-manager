@@ -32,8 +32,8 @@ const findByQuery = async (query) => {
 
   if (!result) {
     return {
-      type: ERRORS_TYPE.NOT_FOUND,
-      message: ERRORS_MESSAGE.NOT_FOUND,
+      type: ERRORS_TYPE.PRODUCT_NOT_FOUND,
+      message: ERRORS_MESSAGE.PRODUCT_NOT_FOUND,
       error: new Error('Nenhum resultado retornado'),
     }
   }
@@ -45,10 +45,10 @@ const create = async (data) => {
   const result = await productsModel.create(data);
 
   if (!result) {
+    console.log("inside result if", ERRORS_TYPE);
     return {
-      type: ERRORS_TYPE.NOT_FOUND,
-      message: ERRORS_MESSAGE.NOT_FOUND,
-      error: new Error('Nenhum resultado retornado'),
+      type: ERRORS_TYPE.PRODUCT_NOT_FOUND,
+      message: ERRORS_MESSAGE.PRODUCT_NOT_FOUND,
     }
   }
 
@@ -60,8 +60,8 @@ const update = async (id) => {
 
   if (!result) {
     return {
-      type: ERRORS_TYPE.NOT_FOUND,
-      message: ERRORS_MESSAGE.NOT_FOUND,
+      type: ERRORS_TYPE.PRODUCT_NOT_FOUND,
+      message: ERRORS_MESSAGE.PRODUCT_NOT_FOUND,
       error: new Error('Nenhum resultado retornado'),
     }
   }
@@ -74,8 +74,8 @@ const remove = async (id) => {
 
   if (!result) {
     return {
-      type: ERRORS_TYPE.NOT_FOUND,
-      message: ERRORS_MESSAGE.NOT_FOUND,
+      type: ERRORS_TYPE.PRODUCT_NOT_FOUND,
+      message: ERRORS_MESSAGE.PRODUCT_NOT_FOUND,
       error: new Error('Nenhum resultado retornado'),
     }
   }

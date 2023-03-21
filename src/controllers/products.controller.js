@@ -35,21 +35,23 @@ const findByQuery = async (req, res) => {
 };
 const create = async (req, res) => {
   const data = req.body
- const insertId = await productsService.create(data);
 
- if (insertId.type) {
+  const insertId = await productsService.create(data);
+
+ if (insertId.message) {
    const error = insertId;
-   return res.status(404).json(error);
+   return res.status(404).json({ message: error.message });
  }
 
  return res.status(201).json({ id: insertId, name: data.name });
 };
+
 const update = async (req, res) => {
  const result = await productsService.update(id);
 
  if (result.type) {
   const error = result;
-  return res.status(404).json(error);
+  return res.status(404).json({ message: error.message });
  }
 
  return res.status(200).json(result);
@@ -59,7 +61,7 @@ const remove = async (req, res) => {
 
  if (result.type) {
   const error = result;
-  return res.status(404).json(error);
+  return res.status(404).json({ message: error.message });
  }
 
  return res.status(200).json(result);

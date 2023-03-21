@@ -5,13 +5,13 @@ const chaiHttp = require("chai-http");
 const sinonChai = require("sinon-chai");
 
 // Mocks and stubs
-const { productsService } = require("../../../src/services");
-const { findAllReturn } = require("../models/mocks/products.model.mocks");
+const { productsService } = require("../../src/services");
+const { findAllReturn } = require("../unit/models/mocks/products.model.mocks");
 
 // To test
-const { ERRORS_MESSAGE, ERRORS_TYPE } = require("../../../src/errors");
-const app = require("../../../src/app");
-const { connection } = require("../../../src/models/connection");
+const { ERRORS_MESSAGE, ERRORS_TYPE } = require("../../src/errors");
+const app = require("../../src/app");
+const { connection } = require("../../src/models/connection");
 
 const { expect } = chai;
 chai.use(chaiHttp);

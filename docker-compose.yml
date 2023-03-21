@@ -24,6 +24,7 @@ services:
     volumes:
       # Monta o diretório atual, com todos os dados do projeto, 
       # dentro do diretório /app
+      - ./:/app/
       - ./src/:/app/src
       - ./tests/:/app/tests
       - ./__tests__/:/app/__tests__
@@ -44,7 +45,6 @@ services:
       MYSQL_HOST: db # Nome do service logo abaixo
       PORT: '3001'
       HOST: store_manager
-      
     networks:
       # Conecta esse serviço com a rede que criada
       - store_manager_net
