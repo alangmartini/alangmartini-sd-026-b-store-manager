@@ -1,7 +1,7 @@
-const productsModel = require('../models');
+const { productsModel } = require('../models');
 
 const findAll = async () => {
-  const result = productsModel.findAll(id);
+  const result = productsModel.findAll();
 
   if (!result) {
     return {
@@ -14,7 +14,7 @@ const findAll = async () => {
   return result;
 };
 
-const findById = async () => {
+const findById = async (id) => {
   const result = productsModel.findById(id);
 
   if (!result) {
@@ -28,8 +28,8 @@ const findById = async () => {
   return result;
 };
 
-const findBy = async () => {
-  const result = productsModel.findBy(id);
+const findByQuery = async (query) => {
+  const result = productsModel.findByQuery(query);
 
   if (!result) {
     return {
@@ -42,8 +42,8 @@ const findBy = async () => {
   return result;
 };
 
-const create = async () => {
-  const result = productsModel.create(id);
+const create = async (data) => {
+  const result = productsModel.create(data);
 
   if (!result) {
     return {
@@ -56,7 +56,7 @@ const create = async () => {
   return result;
 };
 
-const update = async () => {
+const update = async (id) => {
   const result = productsModel.update(id);
 
   if (!result) {
@@ -70,7 +70,7 @@ const update = async () => {
   return result;
 };
 
-const remove = async () => {
+const remove = async (id) => {
   const result = productsModel.remove(id);
 
   if (!result) {
@@ -88,7 +88,7 @@ const remove = async () => {
 module.exports = {
   findAll,
   findById,
-  findBy,
+  findByQuery,
   create,
   update,
   remove,
