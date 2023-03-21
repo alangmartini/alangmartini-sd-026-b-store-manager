@@ -1,5 +1,4 @@
 const { connection } = require('./connection');
-const snakeize = require('snakeize')
 
 const tableName = '';
 
