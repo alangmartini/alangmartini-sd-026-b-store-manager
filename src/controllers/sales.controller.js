@@ -62,14 +62,15 @@ const update = async (req, res) => {
 const remove = async (req, res) => {
   const { id } = req.params;
 
- const result = await salesService.delete(id);
+ const result = await salesService.remove(id);
+ console.log('result  controller is:', result);
 
  if (result.type) {
   const error = result;
   return res.status(404).json(error);
  }
 
- return res.status(200).json(result);
+ return res.status(204).json({});
 };
 
 module.exports = {

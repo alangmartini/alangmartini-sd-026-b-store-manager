@@ -29,21 +29,15 @@ const findById = async (id) => {
   INNER JOIN sales_products AS sp ON sp.sale_id = sales.id
   WHERE sales.id = ?;
   `, [id]);
-  
-  const format = result.map((sale) => ({
-      date: sale.date,
-      productId: sale.product_id,
-      quantity: sale.quantity,
-    }));
 
-  return format;
+  return result;
 };
-const findByIdJOIN = async (id) => {
+
+const findByIdSales = async (id) => {
   const [result] = await connection.execute(
     `
   SELECT *
   FROM sales
-  INNER JOIN sales_products AS sp ON sp.sale_id = sales.id
   WHERE sales.id = ?;
   `,
     [id],
@@ -85,7 +79,7 @@ const insertIntoSales = async () => {
 const create = async (data) => {  
   const { productId } = data[0];
 
-  const isExistent = await findByIdJOIN(productId);
+  const isExistent = await findById(productId);
   
   if (!isExistent || isExistent.length === 0) {
     return {
@@ -172,17 +166,22 @@ const update = async (id, data) => {
 };
 
 const remove = async (id) => {
-  const [result] = await connection.execute(`
-    DELETE FROM ${tableName} WHERE id = ?;
-  `, [id]);
+  try {
+    const [result] = await connection.execute(`
+      DELETE FROM ${tableName} WHERE id = ?;
+    `, [id]);
 
-  return result;
+    return result;
+  } catch (error) {
+    return error;
+  }
 };
 
 module.exports = {
   findAll,
   findById,
   findByIds,
+  findByIdSales,
   // findByQuery,
   insertIntoSales,
   create,
