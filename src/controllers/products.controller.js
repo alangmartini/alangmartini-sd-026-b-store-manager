@@ -60,16 +60,18 @@ const update = async (req, res) => {
 
  return res.status(200).json(result);
 };
+
 const remove = async (req, res) => {
   const { id } = req.params;
- const result = await productsService.delete(id);
+
+ const result = await productsService.remove(id);
 
  if (result.type) {
   const error = result;
   return res.status(404).json({ message: error.message });
  }
 
- return res.status(200).json(result);
+  return res.status(204).json({});
 };
 
 module.exports = {

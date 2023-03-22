@@ -18,9 +18,9 @@ productsRouter.post(
 
 productsRouter.put('/:id',
   productMiddleware.validateName,
-  productsController.update,
-);
+  productsController.update);
 
-productsRouter.delete('/:id', productsController.remove);
+productsRouter.delete('/:id',
+  productsController.remove);
 
 module.exports = productsRouter;

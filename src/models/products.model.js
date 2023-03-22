@@ -12,7 +12,6 @@ const findAll = async () => {
 };
 
 const findById = async (id) => {
-  console.log('executed');
   const [[result]] = await connection.execute(`
     SELECT * FROM products WHERE id = ?;
   `, [id]);
@@ -73,11 +72,14 @@ const update = async (id, data) => {
 };
 
 const remove = async (id) => {
-  const [result] = await connection.execute(`
-    DELETE FROM ${tableName} WHERE id = ?;
-  `, [id]);
-
-  return result;
+  try {
+    const [result] = await connection.execute(`
+      DELETE FROM products WHERE id = ?;
+    `, [id]);
+    return result;
+  } catch (error) {
+    return error;
+  }
 };
 
 module.exports = {

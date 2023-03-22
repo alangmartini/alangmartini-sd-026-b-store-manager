@@ -46,7 +46,6 @@ const create = async (data) => {
   const result = await productsModel.create(data);
 
   if (!result) {
-    console.log('inside result if', ERRORS_TYPE);
     return {
       type: ERRORS_TYPE.PRODUCT_NOT_FOUND,
       message: ERRORS_MESSAGE.PRODUCT_NOT_FOUND,
@@ -81,6 +80,15 @@ const update = async (id, data) => {
 };
 
 const remove = async (id) => {
+    const error = await validateId.validateIdIsExistent(
+      id,
+      productsModel.findById,
+    );
+
+    if (error.type) {
+      return error;
+    }
+  
   const result = await productsModel.remove(id);
 
   if (!result) {
