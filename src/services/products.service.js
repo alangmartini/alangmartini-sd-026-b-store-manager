@@ -35,7 +35,6 @@ const findByQuery = async (query) => {
     return {
       type: ERRORS_TYPE.PRODUCT_NOT_FOUND,
       message: ERRORS_MESSAGE.PRODUCT_NOT_FOUND,
-      error: new Error('Nenhum resultado retornado'),
     };
   }
 

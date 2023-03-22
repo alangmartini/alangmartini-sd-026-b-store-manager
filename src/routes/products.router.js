@@ -4,11 +4,11 @@ const { productMiddleware } = require('../middlewares');
 
 const productsRouter = express.Router();
 
-productsRouter.get('/', productsController.findAll);
+productsRouter.get('/search', productsController.findByQuery);
 
 productsRouter.get('/:id', productsController.findById);
 
-productsRouter.get('/search', productsController.findByQuery);
+productsRouter.get('/', productsController.findAll);
 
 productsRouter.post(
   '/',

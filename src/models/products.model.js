@@ -21,10 +21,10 @@ const findById = async (id) => {
 
 const findByQuery = async (query) => {
   const [result] = await connection.execute(`
-    SELECT * FROM ${tableName} WHERE name LIKE '%?%';
-  `, [query]);
-
+    SELECT * FROM products WHERE \`name\` LIKE '%${query}%';
+  `);
   return result;
+  
 };
 
 const create = async (data) => {

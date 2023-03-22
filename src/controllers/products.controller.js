@@ -24,6 +24,7 @@ const findById = async (req, res) => {
  return res.status(200).json(result);
 };
 const findByQuery = async (req, res) => {
+  console.log('oi');
   const { q } = req.query;
  const result = await productsService.findByQuery(q);
 
