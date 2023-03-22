@@ -38,6 +38,19 @@ const findById = async (id) => {
 
   return format;
 };
+const findByIdRaw = async (id) => {
+  const [result] = await connection.execute(
+    `
+  SELECT *
+  FROM sales
+  INNER JOIN sales_products AS sp ON sp.sale_id = sales.id
+  WHERE sales.id = ?;
+  `,
+    [id],
+  );
+
+  return result;
+};
 
 const findByIds = async (placeHolders, data) => {
   const idsProducts = data.map((sale) => sale.productId);
@@ -72,8 +85,7 @@ const insertIntoSales = async () => {
 const create = async (data) => {  
   const { productId } = data[0];
 
-  const isExistent = await findById(productId);
-  console.log(' single isExistent is:', isExistent);
+  const isExistent = await findByIdRaw(productId);
   
   if (!isExistent || isExistent.length === 0) {
     return {

@@ -34,7 +34,7 @@ describe("Tests for sales model", function () {
   describe("create function", function () {
     it("Should return correctly when sale with 1 product", async function () {
       sinon.stub(connection, "execute")
-        .onCall(0).returns([22])
+        .onCall(0).returns([[22]])
         .onCall(1).returns([{ insertId: 1 }])
         .onCall(2).returns([]);
 
@@ -44,11 +44,12 @@ describe("Tests for sales model", function () {
     });
     it("Should return correctly when sale with multiple products", async function () {
       sinon.stub(connection, "execute")
-        .onCall(0).returns([22])
+        .onCall(0).returns([[1, 2]])
         .onCall(1).returns([{ insertId: 1 }])
         .onCall(2).returns([]);
 
       const result = await salesModel.createMultiple(mock.sales);
+      console.log('result is:', result);
       
 
       expect(result).to.equal(1);
