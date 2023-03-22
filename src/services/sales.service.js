@@ -122,7 +122,7 @@ const update = async (id, data) => {
 
 const remove = async (id) => {
   const error = await validateId.validateIdIsExistent(
-    id,
+    [id],
     salesModel.findByIdSales,
     'SALE',
     );
@@ -131,7 +131,7 @@ const remove = async (id) => {
     return error;
   }
   
-  const result = await salesModel.remove(id);
+  const result = await salesModel.remove([id]);
 
   if (!result || result.length === 0) {
     return {

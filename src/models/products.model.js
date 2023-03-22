@@ -55,10 +55,10 @@ const update = async (id, data) => {
   const placeholders = columns.map((column) => `${column} = ?`).join(', ');
 
   const updateQuery = `
-      UPDATE products
-      SET ${placeholders}
-      WHERE id = ?;
-    `;
+  UPDATE products
+  SET ${placeholders}
+  WHERE id = ?;
+  `;
   
   try {
     const [result] = await connection.execute(

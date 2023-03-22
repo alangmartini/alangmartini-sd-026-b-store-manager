@@ -57,11 +57,11 @@ const create = async (data) => {
 
 const update = async (id, data) => {
   const error = await validateId
-    .validateIdIsExistent(
-      id,
-      productsModel.findById,
+    .validateIdIsExistentProduct(
+    id,
+    productsModel.findById,
     );
-
+    
   if (error.type) {
     return error;
   }
@@ -80,7 +80,7 @@ const update = async (id, data) => {
 };
 
 const remove = async (id) => {
-    const error = await validateId.validateIdIsExistent(
+    const error = await validateId.validateIdIsExistentProduct(
       id,
       productsModel.findById,
     );
