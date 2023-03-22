@@ -54,8 +54,9 @@ const create = async (data) => {
   const { productId } = data[0];
 
   const isExistent = await findById(productId);
+  console.log(' single isExistent is:', isExistent);
   
-  if (!isExistent) {
+  if (!isExistent || isExistent.length === 0) {
     return {
       type: ERRORS_TYPE.INVALID_ID,
       message: ERRORS_MESSAGE.INVALID_ID,
@@ -93,7 +94,7 @@ const createMultiple = async (data) => {
   
   const isExistent = await findByIds(placeHolders, data);
 
-  if (!isExistent) {
+  if (!isExistent || isExistent.length === 0 || isExistent.length !== data.length) {
     return { type: ERRORS_TYPE.INVALID_ID,
       message: ERRORS_MESSAGE.INVALID_ID,
     };

@@ -4,7 +4,7 @@ const ERRORS_TYPE = {
 };
 const ERRORS_MESSAGE = {
   PRODUCT_NOT_FOUND: 'Product not found',
-  INVALID_ID: 'Product id not existent',
+  INVALID_ID: 'Product not found',
 };
 
 module.exports = {

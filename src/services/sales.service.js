@@ -41,16 +41,28 @@ const findByQuery = async (query) => {
 };
 
 const create = async (data) => {
-  const result = salesModel.create(data);
+  let result;
+  if (data.length === 1) {
+    result = await salesModel.create(data);
+  }
 
-  if (!result) {
+  if (data.length > 1) {
+    result = await salesModel.createMultiple(data);
+  }
+
+  if (result.type) {
     return {
-      type: ERRORS_TYPE.NOT_FOUND,
-      message: ERRORS_MESSAGE.NOT_FOUND,
+      type: ERRORS_TYPE.INVALID_ID,
+      message: ERRORS_MESSAGE.INVALID_ID,
     };
   }
 
-  return result;
+  const constructedSalesObject = {
+    id: result,
+    itemsSold: data,
+  };
+
+  return constructedSalesObject;
 };
 
 const update = async (id) => {

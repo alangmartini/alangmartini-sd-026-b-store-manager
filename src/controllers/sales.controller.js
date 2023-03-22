@@ -32,18 +32,20 @@ const findByQuery = async (req, res) => {
 
  return res.status(200).json(result);
 };
+
 const create = async (req, res) => {
   const data = req.body;
 
-  const result = salesService.create(data);
+  const result = await salesService.create(data);
 
   if (result.type) {
     const error = result;
-    return res.status(404).json(error);
+    return res.status(404).json({ message: error.message });
   }
 
-  return res.status(200).json(result);
+  return res.status(201).json(result);
 };
+
 const update = async (req, res) => {
   const { id } = req.params;
  const result = salesService.update(id);
@@ -55,6 +57,7 @@ const update = async (req, res) => {
 
  return res.status(200).json(result);
 };
+
 const remove = async (req, res) => {
   const { id } = req.params;
 
