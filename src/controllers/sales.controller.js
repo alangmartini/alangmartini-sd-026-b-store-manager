@@ -13,7 +13,6 @@ const findAll = async (_req, res) => {
 const findById = async (req, res) => {
   const { id } = req.params;
  const result = await salesService.findById(id);
- console.log('result is:', result);
 
  if (result.type) {
   const error = result;
@@ -49,7 +48,9 @@ const create = async (req, res) => {
 
 const update = async (req, res) => {
   const { id } = req.params;
- const result = await salesService.update(id);
+  const data = req.body;
+
+ const result = await salesService.update(id, data);
 
  if (result.type) {
   const error = result;
@@ -63,7 +64,6 @@ const remove = async (req, res) => {
   const { id } = req.params;
 
  const result = await salesService.remove(id);
- console.log('result  controller is:', result);
 
  if (result.type) {
   const error = result;

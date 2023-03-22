@@ -1,3 +1,4 @@
+const snakeize = require('snakeize');
 const { ERRORS_TYPE, ERRORS_MESSAGE } = require('../errors');
 const { connection } = require('./connection');
 
@@ -33,14 +34,16 @@ const findById = async (id) => {
   return result;
 };
 
-const findByIdSales = async (id) => {
+const findByIdSales = async (idArr) => {
+  const placeholders = idArr.map(() => 'id = ?').join(' AND ');
+
   const [result] = await connection.execute(
     `
   SELECT *
   FROM sales
-  WHERE sales.id = ?;
+  WHERE ${placeholders};
   `,
-    [id],
+    idArr,
   );
 
   return result;
@@ -145,31 +148,40 @@ const createMultiple = async (data) => {
 };
 
 const update = async (id, data) => {
-  const placeHolders = Object
-    .entries(data)
-    .map(() => '? = ?')
-    .join(', ');
+  const updateQuery = `
+  UPDATE sales_products
+  SET product_id = ?, quantity = ?
+  WHERE product_id = ? AND sale_id = ?;
+  `;
+  
+  try {
+    const [result] = await connection.execute(updateQuery, [
+      data.productId,
+      data.quantity,
+      data.productId,
+      id,
+    ]);
+    return result;
+  } catch (error) {
+    return error;
+  }
+};
 
-  const columsValuePair = [];
+const updateMultiple = async (id, data) => {
+  const promisesArr = data.map((saleToUpdate) => update(id, saleToUpdate));
 
-  Object
-    .entries(data)
-    .forEach((entry) => columsValuePair.push([entry[0], entry[1]]));
-
-  const [result] = await connection.execute(`
-    UPDATE ${tableName}
-    SET (${placeHolders})
-    WHERE id = ?;
-  `, [...columsValuePair, id]);
-
+  const result = await Promise.all(promisesArr);
+  
   return result;
 };
 
-const remove = async (id) => {
+const remove = async (idArr) => {
+  const placeholders = idArr.map(() => 'id = ?').join(' AND ');
+
   try {
     const [result] = await connection.execute(`
-      DELETE FROM ${tableName} WHERE id = ?;
-    `, [id]);
+      DELETE FROM ${tableName} WHERE ${placeholders};
+    `, idArr);
 
     return result;
   } catch (error) {
@@ -186,6 +198,6 @@ module.exports = {
   insertIntoSales,
   create,
   createMultiple,
-  update,
+  updateMultiple,
   remove,
 };

@@ -14,7 +14,9 @@ salesRouter.post(
   salesController.create,
 );
 
-salesRouter.put('/:id', salesController.update);
+salesRouter.put('/:id',
+  salesMiddleware.validateQuantityAndProductId,
+  salesController.update);
 
 salesRouter.delete('/:id', salesController.remove);
 
