@@ -1,7 +1,7 @@
 const { salesService } = require('../services');
 
 const findAll = async (_req, res) => {
- const result = salesService.findAll();
+ const result = await salesService.findAll();
 
  if (result.type) {
   const error = result;
@@ -12,7 +12,8 @@ const findAll = async (_req, res) => {
 };
 const findById = async (req, res) => {
   const { id } = req.params;
- const result = salesService.findById(id);
+ const result = await salesService.findById(id);
+ console.log('result is:', result);
 
  if (result.type) {
   const error = result;
@@ -23,7 +24,7 @@ const findById = async (req, res) => {
 };
 const findByQuery = async (req, res) => {
   const { q } = req.query;
- const result = salesService.findByQuery(q);
+ const result = await salesService.findByQuery(q);
 
  if (result.type) {
   const error = result;
@@ -48,7 +49,7 @@ const create = async (req, res) => {
 
 const update = async (req, res) => {
   const { id } = req.params;
- const result = salesService.update(id);
+ const result = await salesService.update(id);
 
  if (result.type) {
   const error = result;
@@ -61,7 +62,7 @@ const update = async (req, res) => {
 const remove = async (req, res) => {
   const { id } = req.params;
 
- const result = salesService.delete(id);
+ const result = await salesService.delete(id);
 
  if (result.type) {
   const error = result;

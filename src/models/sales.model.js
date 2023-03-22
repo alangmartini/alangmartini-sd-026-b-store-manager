@@ -4,20 +4,39 @@ const { connection } = require('./connection');
 const tableName = 'sales';
 const junctionTableName = 'sales_products';
 
-// const findAll = async () => {
-//   const [result] = await connection.execute(`
-//   SELECT * FROM ${tableName};
-//   `);
+const findAll = async () => {
+  const [result] = await connection.execute(`
+  SELECT *
+  FROM sales
+  INNER JOIN sales_products AS sp ON sp.sale_id = sales.id 
+  ;
+  `);
 
-//   return result;
-// };
+    const format = result.map((sale) => ({
+      date: sale.date,
+      saleId: sale.sale_id,
+      productId: sale.product_id,
+      quantity: sale.quantity,
+    }));
+
+  return format;
+};
 
 const findById = async (id) => {
   const [result] = await connection.execute(`
-    SELECT * FROM ${tableName} WHERE id = ?;
+  SELECT *
+  FROM sales
+  INNER JOIN sales_products AS sp ON sp.sale_id = sales.id
+  WHERE sales.id = ?;
   `, [id]);
+  
+  const format = result.map((sale) => ({
+      date: sale.date,
+      productId: sale.product_id,
+      quantity: sale.quantity,
+    }));
 
-  return result;
+  return format;
 };
 
 const findByIds = async (placeHolders, data) => {
@@ -149,7 +168,7 @@ const remove = async (id) => {
 };
 
 module.exports = {
-  // findAll,
+  findAll,
   findById,
   findByIds,
   // findByQuery,

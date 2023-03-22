@@ -2,12 +2,12 @@ const { ERRORS_MESSAGE, ERRORS_TYPE } = require('../errors');
 const { salesModel } = require('../models');
 
 const findAll = async () => {
-  const result = salesModel.findAll();
+  const result = await salesModel.findAll();
 
-  if (!result) {
+  if (!result || result.length === 0) {
     return {
-      type: ERRORS_TYPE.NOT_FOUND,
-      message: ERRORS_MESSAGE.NOT_FOUND,
+      type: ERRORS_TYPE.SALE_NOT_FOUND,
+      message: ERRORS_MESSAGE.SALE_NOT_FOUND,
     };
   }
 
@@ -15,12 +15,12 @@ const findAll = async () => {
 };
 
 const findById = async (id) => {
-  const result = salesModel.findById(id);
+  const result = await salesModel.findById(id);
 
-  if (!result) {
+  if (!result || result.length === 0) {
     return {
-      type: ERRORS_TYPE.NOT_FOUND,
-      message: ERRORS_MESSAGE.NOT_FOUND,
+      type: ERRORS_TYPE.SALE_NOT_FOUND,
+      message: ERRORS_MESSAGE.SALE_NOT_FOUND,
     };
   }
 
@@ -30,10 +30,10 @@ const findById = async (id) => {
 const findByQuery = async (query) => {
   const result = salesModel.findByQuery(query);
 
-  if (!result) {
+  if (!result || result.length === 0) {
     return {
-      type: ERRORS_TYPE.NOT_FOUND,
-      message: ERRORS_MESSAGE.NOT_FOUND,
+      type: ERRORS_TYPE.SALE_NOT_FOUND,
+      message: ERRORS_MESSAGE.SALE_NOT_FOUND,
     };
   }
 
@@ -68,10 +68,10 @@ const create = async (data) => {
 const update = async (id) => {
   const result = salesModel.update(id);
 
-  if (!result) {
+  if (!result || result.length === 0) {
     return {
-      type: ERRORS_TYPE.NOT_FOUND,
-      message: ERRORS_MESSAGE.NOT_FOUND,
+      type: ERRORS_TYPE.SALE_NOT_FOUND,
+      message: ERRORS_MESSAGE.SALE_NOT_FOUND,
     };
   }
 
@@ -81,10 +81,10 @@ const update = async (id) => {
 const remove = async (id) => {
   const result = salesModel.remove(id);
 
-  if (!result) {
+  if (!result || result.length === 0) {
     return {
-      type: ERRORS_TYPE.NOT_FOUND,
-      message: ERRORS_MESSAGE.NOT_FOUND,
+      type: ERRORS_TYPE.SALE_NOT_FOUND,
+      message: ERRORS_MESSAGE.SALE_NOT_FOUND,
     };
   }
 
