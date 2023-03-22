@@ -49,7 +49,9 @@ const create = async (req, res) => {
 
 const update = async (req, res) => {
   const { id } = req.params;
- const result = await productsService.update(id);
+  const data = req.body;
+
+ const result = await productsService.update(id, data);
 
  if (result.type) {
   const error = result;

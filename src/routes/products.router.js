@@ -16,7 +16,10 @@ productsRouter.post(
   productsController.create,
 );
 
-productsRouter.put('/:id', productsController.update);
+productsRouter.put('/:id',
+  productMiddleware.validateName,
+  productsController.update,
+);
 
 productsRouter.delete('/:id', productsController.remove);
 

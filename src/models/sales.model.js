@@ -38,7 +38,7 @@ const findById = async (id) => {
 
   return format;
 };
-const findByIdRaw = async (id) => {
+const findByIdJOIN = async (id) => {
   const [result] = await connection.execute(
     `
   SELECT *
@@ -85,7 +85,7 @@ const insertIntoSales = async () => {
 const create = async (data) => {  
   const { productId } = data[0];
 
-  const isExistent = await findByIdRaw(productId);
+  const isExistent = await findByIdJOIN(productId);
   
   if (!isExistent || isExistent.length === 0) {
     return {

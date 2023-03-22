@@ -12,8 +12,9 @@ const findAll = async () => {
 };
 
 const findById = async (id) => {
+  console.log('executed');
   const [[result]] = await connection.execute(`
-    SELECT * FROM ${tableName} WHERE id = ?;
+    SELECT * FROM products WHERE id = ?;
   `, [id]);
 
   return result;
@@ -50,24 +51,25 @@ const create = async (data) => {
 };
 
 const update = async (id, data) => {
-  const placeHolders = Object
-    .entries(data)
-    .map(() => '? = ?')
-    .join(', ');
+  const columns = Object.keys(data);
 
-  const columsValuePair = [];
+  const placeholders = columns.map((column) => `${column} = ?`).join(', ');
 
-  Object
-    .entries(data)
-    .forEach((entry) => columsValuePair.push([entry[0], entry[1]]));
-
-  const [result] = await connection.execute(`
-    UPDATE ${tableName}
-    SET (${placeHolders})
-    WHERE id = ?;
-  `, [...columsValuePair, id]);
-
-  return result;
+  const updateQuery = `
+      UPDATE products
+      SET ${placeholders}
+      WHERE id = ?;
+    `;
+  
+  try {
+    const [result] = await connection.execute(
+      updateQuery,
+      [...Object.values(data), id],
+    );
+    return result;
+  } catch (error) {
+    return error;
+  }
 };
 
 const remove = async (id) => {

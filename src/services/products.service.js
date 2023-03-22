@@ -1,5 +1,6 @@
 const { ERRORS_MESSAGE, ERRORS_TYPE } = require('../errors');
 const { productsModel } = require('../models');
+const { validateId } = require('./validations');
 
 const findAll = async () => {
   const result = await productsModel.findAll();
@@ -55,18 +56,28 @@ const create = async (data) => {
   return result;
 };
 
-const update = async (id) => {
-  const result = await productsModel.update(id);
+const update = async (id, data) => {
+  const error = await validateId
+    .validateIdIsExistent(
+      id,
+      productsModel.findById,
+    );
 
-  if (!result) {
-    return {
-      type: ERRORS_TYPE.PRODUCT_NOT_FOUND,
-      message: ERRORS_MESSAGE.PRODUCT_NOT_FOUND,
-      error: new Error('Nenhum resultado retornado'),
-    };
+  if (error.type) {
+    return error;
   }
 
-  return result;
+  const result = await productsModel.update(id, data);
+
+  if (result instanceof Error) {
+    const errorOnInsert = result;
+    return errorOnInsert;
+  }
+
+  return {
+    id,
+    name: data.name,
+  };
 };
 
 const remove = async (id) => {
@@ -76,7 +87,6 @@ const remove = async (id) => {
     return {
       type: ERRORS_TYPE.PRODUCT_NOT_FOUND,
       message: ERRORS_MESSAGE.PRODUCT_NOT_FOUND,
-      error: new Error('Nenhum resultado retornado'),
     };
   }
 
