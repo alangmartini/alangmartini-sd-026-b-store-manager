@@ -1,4 +1,3 @@
-const snakeize = require('snakeize');
 const { ERRORS_TYPE, ERRORS_MESSAGE } = require('../errors');
 const { connection } = require('./connection');
 

@@ -1,4 +1,3 @@
-/* eslint-disable max-lines-per-function */
 const { ERRORS_MESSAGE, ERRORS_TYPE } = require('../errors');
 const { salesModel } = require('../models');
 const { validateId } = require('./validations');
@@ -73,30 +72,35 @@ const create = async (data) => {
   return constructedSalesObject;
 };
 
-const update = async (id, data) => {
+const multipleValidate = async (id, data) => {
   const error = await validateId.validateIdIsExistent(
     [id],
     salesModel.findByIdSales,
     'SALE',
-    );
+  );
 
   if (error.type) {
     return error;
   }
 
-  const productValidationPromises = data.map((sales) => validateId.validateIdIsExistent(
-      [sales.productId],
-      salesModel.findByIdSales,
-    ));
+  const productValidationPromises = data.map((sales) =>
+    validateId.validateIdIsExistent([sales.productId], salesModel.findByIdSales));
 
   const productValidation = await Promise.all(productValidationPromises);
-  console.log('teste2 is:', productValidation);
 
   if (productValidation.some((validation) => validation.type)) {
     return {
       type: ERRORS_TYPE.PRODUCT_NOT_FOUND,
       message: ERRORS_MESSAGE.PRODUCT_NOT_FOUND,
     };
+  }
+};
+
+const update = async (id, data) => {
+  const validation = await multipleValidate(id, data);
+
+  if (validation) {
+    return validation;
   }
 
   const result = await salesModel.updateMultiple(id, data);
