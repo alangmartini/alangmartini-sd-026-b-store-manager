@@ -53,6 +53,7 @@ const update = async (req, res) => {
   const data = req.body;
 
  const result = await productsService.update(id, data);
+ console.log('result is:', result);
 
  if (result.type) {
   const error = result;

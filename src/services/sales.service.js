@@ -77,7 +77,7 @@ const multipleValidate = async (id, data) => {
     [id],
     salesModel.findByIdSales,
     'SALE',
-  );
+    );
 
   if (error.type) {
     return error;

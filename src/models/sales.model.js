@@ -45,6 +45,7 @@ const findByIdSales = async (idArr) => {
     idArr,
   );
 
+  console.log('result is:', result);
   return result;
 };
 

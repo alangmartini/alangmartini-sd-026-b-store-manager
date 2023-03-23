@@ -24,7 +24,6 @@ const findByQuery = async (query) => {
     SELECT * FROM products WHERE \`name\` LIKE '%${query}%';
   `);
   return result;
-  
 };
 
 const create = async (data) => {
@@ -64,7 +63,7 @@ const update = async (id, data) => {
     const [result] = await connection.execute(
       updateQuery,
       [...Object.values(data), id],
-    );
+      );
     return result;
   } catch (error) {
     return error;

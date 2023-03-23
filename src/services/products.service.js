@@ -56,11 +56,12 @@ const create = async (data) => {
 
 const update = async (id, data) => {
   const error = await validateId
-    .validateIdIsExistentProduct(
+  .validateIdIsExistentProduct(
     id,
     productsModel.findById,
-    );
+  );
     
+  console.log('error is:', error);
   if (error.type) {
     return error;
   }

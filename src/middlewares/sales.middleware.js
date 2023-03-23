@@ -13,7 +13,6 @@ const decideStatusCode = (errorMessage) => {
 const validateQuantityAndProductId = async (req, res, next) => {
   const data = req.body;
   const error = salesSchema.salesArraySchema.validate(data);
-  console.log('error is:', error);
 
   if (error.error) {
     const errorMessage = error.error.message;

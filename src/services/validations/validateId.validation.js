@@ -2,6 +2,7 @@ const { ERRORS_TYPE, ERRORS_MESSAGE } = require('../../errors');
 
 const validateIdIsExistent = async (id, findByIdFn, type = 'PRODUCT') => {
   const isExistent = await findByIdFn(id);
+  console.log('isExistent is:', isExistent);
 
   if (!isExistent || !isExistent.length > 0) {
     return {

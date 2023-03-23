@@ -103,6 +103,7 @@ describe("Tests for products integration", function () {
       expect(answer.body).to.deep.equal({ message: ERROR_OBJECT.message });
       expect(answer.status).to.equal(404);
     });
+
     it("Should return a error: wrong type", async function () {
       sinon.stub(connection, "execute").resolves([mock.insertIdObj]);
   
@@ -114,6 +115,7 @@ describe("Tests for products integration", function () {
       expect(answer.body).to.deep.equal({ message: NAME_MESSAGES["string.base"] });
       expect(answer.status).to.equal(400);
     });
+
     it("Should return a error: too short", async function () {
       sinon.stub(connection, "execute").resolves([mock.insertIdObj]);
   
@@ -144,6 +146,97 @@ describe("Tests for products integration", function () {
       const answer = await chai
         .request(app)
         .post("/products")
+        .send({ });
+
+      expect(answer.body).to.deep.equal({
+        message: NAME_MESSAGES["any.required"],
+      });
+      expect(answer.status).to.equal(400);
+    });
+  });
+
+  describe("Update a product", function () {
+    it("Should return the updated", async function () {
+      sinon.stub(connection, "execute")
+      .onCall(0).resolves([['cool item', 'another cool items']])
+      .onCall(1).resolves([mock.insertIdObj])
+
+      const answer = await chai
+      .request(app)
+      .put("/products/1")
+      .send({ name: mock.product.name });
+      
+      console.log('answer is:', answer.body);
+      expect(answer.body).to.deep.equal({
+        "id": "1",
+        "name": "Herois de brinquedo"
+      });
+      expect(answer.body.id).to.deep.equal('1');
+      expect(answer.status).to.equal(200);
+    });
+
+    it("Should return a error", async function () {
+      sinon
+        .stub(connection, "execute")
+        .onCall(0).resolves([[]])
+        .onCall(1).resolves([{}]);
+      
+      const ERROR_OBJECT = {
+        type: ERRORS_TYPE.PRODUCT_NOT_FOUND,
+        message: ERRORS_MESSAGE.PRODUCT_NOT_FOUND,
+      };
+
+      const answer = await chai
+        .request(app)
+        .put("/products/99999")
+        .send({ name: mock.product.name  });
+
+      expect(answer.body).to.deep.equal({ message: ERROR_OBJECT.message });
+      expect(answer.status).to.equal(404);
+    });
+
+    it("Should return a error: wrong type", async function () {
+      sinon.stub(connection, "execute").resolves([mock.insertIdObj]);
+  
+      const answer = await chai
+        .request(app)
+        .put("/products/1")
+        .send({ name: mock.wrongProductType });
+
+      expect(answer.body).to.deep.equal({ message: NAME_MESSAGES["string.base"] });
+      expect(answer.status).to.equal(400);
+    });
+
+    it("Should return a error: too short", async function () {
+      sinon.stub(connection, "execute").resolves([mock.insertIdObj]);
+  
+      const answer = await chai
+        .request(app)
+        .put("/products/1")
+        .send({ name: mock.wrongProductShort });
+
+      expect(answer.body).to.deep.equal({ message: NAME_MESSAGES["string.base"] });
+      expect(answer.status).to.equal(400);
+    });
+    it("Should return a error: empty string", async function () {
+      sinon.stub(connection, "execute").resolves([mock.insertIdObj]);
+
+      const answer = await chai
+        .request(app)
+        .put("/products/1")
+        .send({ name: '' });
+
+      expect(answer.body).to.deep.equal({
+        message: NAME_MESSAGES["string.empty"],
+      });
+      expect(answer.status).to.equal(400);
+    });
+    it("Should return a error: no name value", async function () {
+      sinon.stub(connection, "execute").resolves([mock.insertIdObj]);
+
+      const answer = await chai
+        .request(app)
+        .put("/products/1")
         .send({ });
 
       expect(answer.body).to.deep.equal({

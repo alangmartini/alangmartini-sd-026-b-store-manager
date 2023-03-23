@@ -47,4 +47,35 @@ describe("Tests for sales integration", function () {
       expect(answer.status).to.equal(200);
     });
   });
+
+  describe("Update a new product", function () {
+    it("Should return updated product object", async function () {
+      sinon.stub(connection, "execute")
+        .onCall(0).resolves([ 'mocked return so it pass validation'])
+        .onCall(1).resolves([ 'mocked return so it pass validation'])
+        .onCall(2).resolves([ 'mocked return so it pass validation'])
+
+      const answer = await chai
+        .request(app)
+        .put("/sales/1")
+        .send(mock.sales);
+
+      expect(answer.body).to.deep.equal(mock.updatedSale);
+      expect(answer.status).to.equal(200);
+    });
+  });
+
+  describe("Delete a product", function () {
+    it("Should return status code 204", async function () {
+      sinon.stub(connection, "execute")
+        .onCall(0).resolves([ 'mocked return so it pass validation'])
+        
+
+      const answer = await chai
+        .request(app)
+        .delete("/sales/1")
+
+      expect(answer.status).to.equal(204);
+    });
+  });
 })
